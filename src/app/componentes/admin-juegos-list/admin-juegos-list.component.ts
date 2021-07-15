@@ -1,5 +1,9 @@
+import { ClassGetter } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
-import {Juego} from '../../models/juego';
+import { Prueba } from 'src/app/models/Prueba';
+import { GameService } from 'src/app/services/game.service';
+import {Game} from '../../models/game';
+
 
 @Component({
   selector: 'app-admin-juegos-list',
@@ -10,17 +14,27 @@ export class AdminJuegosListComponent implements OnInit {
 
 
 
-  dataJuegos: Juego[] = [
-    {id: 1, nombre: 'Juego1', precio: 15000},
-    {id: 2, nombre: 'Juego2', precio: 12000},
-    {id: 3, nombre: 'Juego3', precio: 10000}
-  ];
+  dataJuegos: Game[] = [];
+
+  prueba: Prueba | undefined;
 
   displayedColumns: string[] = ['id', 'nombre', 'precio'];
 
-  constructor() { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
+
+    this.gameService.getPrueba().subscribe({
+      next: res => {
+        this.prueba = res;
+        console.log(this.prueba);
+      }, error: err => {
+        console.log(err);
+      }
+    });
+
+    }
+
   }
 
-}
+
